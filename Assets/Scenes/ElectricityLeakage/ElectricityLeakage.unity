@@ -20686,6 +20686,7 @@ GameObject:
   - component: {fileID: 1292268962}
   - component: {fileID: 1292268961}
   - component: {fileID: 1292268960}
+  - component: {fileID: 1292268963}
   m_Layer: 0
   m_Name: PC (8)
   m_TagString: Untagged
@@ -20750,7 +20751,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a87cf8a036ab5ce41bb0ad6ee2d86742, type: 2}
+  - {fileID: 2100000, guid: 34123a08b21735b4e9531ad7a300e64c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -20780,6 +20781,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292268958}
   m_Mesh: {fileID: 4300000, guid: 342e055819a721049851869d1eee9028, type: 3}
+--- !u!114 &1292268963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292268958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 587b4eae3d45b469186af2485d45d513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minBekle: 0.05
+  maxBekle: 0.3
 --- !u!1 &1294132335
 GameObject:
   m_ObjectHideFlags: 0
@@ -24421,7 +24436,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a87cf8a036ab5ce41bb0ad6ee2d86742, type: 2}
+  - {fileID: 2100000, guid: 34123a08b21735b4e9531ad7a300e64c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24527,7 +24542,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a87cf8a036ab5ce41bb0ad6ee2d86742, type: 2}
+  - {fileID: 2100000, guid: 7552c7ca9a20deb408e573e7db048937, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24610,7 +24625,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 7
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -24644,8 +24659,8 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
+      time: 0.0040569305
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -32830,6 +32845,7 @@ GameObject:
   - component: {fileID: 2018625054}
   - component: {fileID: 2018625053}
   - component: {fileID: 2018625052}
+  - component: {fileID: 2018625055}
   m_Layer: 0
   m_Name: PC (9)
   m_TagString: Untagged
@@ -32924,6 +32940,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018625050}
   m_Mesh: {fileID: 4300000, guid: 342e055819a721049851869d1eee9028, type: 3}
+--- !u!114 &2018625055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018625050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 587b4eae3d45b469186af2485d45d513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minBekle: 0.05
+  maxBekle: 0.3
 --- !u!1 &2019390353
 GameObject:
   m_ObjectHideFlags: 0
@@ -112464,6 +112494,8 @@ MonoBehaviour:
   cizztiSesi: {fileID: 1499256899}
   monitorler:
   - {fileID: 1125164908}
+  - {fileID: 1292268963}
+  - {fileID: 2018625055}
 --- !u!33 &7357908087170168237
 MeshFilter:
   m_ObjectHideFlags: 0
