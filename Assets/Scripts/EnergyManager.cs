@@ -5,7 +5,6 @@ public class EnergyManager : MonoBehaviour
     public SwitchState[] switches;
    public GameObject electricEffect;
     public AudioSource audioSource;
-    [SerializeField] private GameObject colliderobject; 
 
 
     private bool wasAllOff = false; // önceki durumu takip et
@@ -29,7 +28,13 @@ public class EnergyManager : MonoBehaviour
         if (allOff && !wasAllOff)
         {
             audioSource.Play();
-            colliderobject.SetActive(false);
+
+            // Senaryo hâlâ devam ediyorsa şalter kapatıldı olarak bildir
+            if (ScenarioManager.Instance != null &&
+                ScenarioManager.Instance.currentState == ScenarioManager.ScenarioState.InProgress)
+            {
+                ScenarioManager.Instance.SalterKapatildi();
+            }
         }
 
         wasAllOff = allOff;

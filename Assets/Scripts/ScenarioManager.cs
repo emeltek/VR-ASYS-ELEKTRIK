@@ -7,10 +7,10 @@ public class ScenarioManager : MonoBehaviour
     [Header("Bileşenler")]
     public ElectricLeak electricLeak;
     public DangerTimer dangerTimer;
+    public UIController uiController;
 
     [Header("Sesler")]
     public AudioSource anonsSource;
-    public AudioClip girisAnons;
     public AudioClip kacakTespitAnons;
     public AudioClip tebriklerAnons;
 
@@ -28,21 +28,21 @@ public class ScenarioManager : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
-    {
-        StartScenario();
-    }
+    void Start() { }
 
-    void Update()
+    void Update() { }
+
+    // UI Start butonuna bağlanır
+    public void StartButton()
     {
-        // Şimdilik boş bırakıyoruz (hata almamak için)
+        if (currentState != ScenarioState.Intro) return;
+        StartScenario();
     }
 
     void StartScenario()
     {
         currentState = ScenarioState.Intro;
-        anonsSource.PlayOneShot(girisAnons);
-        Invoke(nameof(LeakiBaslat), girisAnons.length + 1f);
+        LeakiBaslat();
     }
 
     void LeakiBaslat()
@@ -50,7 +50,7 @@ public class ScenarioManager : MonoBehaviour
         currentState = ScenarioState.InProgress;
         electricLeak.LeakiAktifEt();
         dangerTimer.BaslatTimer();
-        anonsSource.PlayOneShot(kacakTespitAnons);
+        //anonsSource.PlayOneShot(kacakTespitAnons);
     }
 
     public void SalterKapatildi()
@@ -61,6 +61,9 @@ public class ScenarioManager : MonoBehaviour
         dangerTimer.TimeriDurdur();
         electricLeak.LeakiDurdur();
         anonsSource.PlayOneShot(tebriklerAnons);
+
+        if (uiController != null)
+            uiController.SenaryoBitti();
     }
 
     public void YanlisMudahale()
@@ -72,4 +75,5 @@ public class ScenarioManager : MonoBehaviour
     {
         if (currentState != ScenarioState.InProgress) return;
     }
+
 }
