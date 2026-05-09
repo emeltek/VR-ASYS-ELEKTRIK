@@ -22749,6 +22749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPanel: {fileID: 2354554235832805205}
   completedPanel: {fileID: 1809267900}
+  scorePanel: {fileID: 738713562}
 --- !u!114 &794546660
 MonoBehaviour:
   m_ObjectHideFlags: 0

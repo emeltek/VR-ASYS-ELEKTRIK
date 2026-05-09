@@ -10,7 +10,7 @@ EditorBuildSettings:
     guid: 48425890b1617a849b14abab954606a4
   - enabled: 1
     path: Assets/Scenes/VR-ASYS-ELEKTIRIK-SINAV.unity
-    guid: 96e0e97089711f04baeda6e90e0c71df
+    guid: 75099cb11bdb46e45be68454c52e28f2
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 5e2e71b5da5eaff4f982e9a1c1342e67, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 6f0006c3fa656384e8757d31f3c23308, type: 2}
