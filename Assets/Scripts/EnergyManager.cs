@@ -7,7 +7,7 @@ public class EnergyManager : MonoBehaviour
     public AudioSource audioSource;
 
 
-    private bool wasAllOff = false; // önceki durumu takip et
+    private bool wasAllOff = true; // önceki durumu takip et
 
     void Update()
     {
@@ -22,12 +22,13 @@ public class EnergyManager : MonoBehaviour
             }
         }
 
-        electricEffect.SetActive(!allOff);
+        
 
         // Sadece durum değiştiğinde çal
         if (allOff && !wasAllOff)
         {
             audioSource.Play();
+            electricEffect.SetActive(false);
 
             // Senaryo hâlâ devam ediyorsa şalter kapatıldı olarak bildir
             if (ScenarioManager.Instance != null &&

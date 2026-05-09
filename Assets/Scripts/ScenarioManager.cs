@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScenarioManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class ScenarioManager : MonoBehaviour
     public AudioClip kacakTespitAnons;
     public AudioClip tebriklerAnons;
 
+    
+    private string sceneName;
     public enum ScenarioState
     {
         Intro,
@@ -28,7 +31,10 @@ public class ScenarioManager : MonoBehaviour
         Instance = this;
     }
 
-    void Start() { }
+    void Start()
+    {
+        sceneName = SceneManager.GetActiveScene().name;
+    }
 
     void Update() { }
 
@@ -60,7 +66,11 @@ public class ScenarioManager : MonoBehaviour
         currentState = ScenarioState.Completed;
         dangerTimer.TimeriDurdur();
         electricLeak.LeakiDurdur();
-        anonsSource.PlayOneShot(tebriklerAnons);
+        if (sceneName  == "VR-ASYS-ELEKTIRIK")
+        {
+            anonsSource.PlayOneShot(tebriklerAnons);
+
+        }
 
         if (uiController != null)
             uiController.SenaryoBitti();

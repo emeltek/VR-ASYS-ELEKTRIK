@@ -1,9 +1,12 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DangerTimer : MonoBehaviour
 {
     [Header("Ayarlar")]
-    public float uyariSuresi = 12f;
+    public float uyariSuresi = 20f;
     public float tekrarAraligi = 15f;
 
     [Header("Ses")]
@@ -13,6 +16,15 @@ public class DangerTimer : MonoBehaviour
     private float timer = 0f;
     private bool aktif = false;
     private bool ilkUyariVerildi = false;
+    
+    public CalculateScore calculateScore;
+    public int negativeScore = 10;
+    private string sceneName;
+
+    private void Start()
+    {
+        sceneName = SceneManager.GetActiveScene().name;
+    }
 
     void Update()
     {
@@ -35,8 +47,13 @@ public class DangerTimer : MonoBehaviour
 
     void UyariVer()
     {
-        uyariSesi.PlayOneShot(tehlikeClip);
+        if (sceneName == "VR-ASYS-ELEKTIRIK")
+        {
+            uyariSesi.PlayOneShot(tehlikeClip);
+
+        }
         ScenarioManager.Instance.TehlikeUyarisi();
+        calculateScore.ScoreManagement(negativeScore);
     }
 
     public void BaslatTimer()

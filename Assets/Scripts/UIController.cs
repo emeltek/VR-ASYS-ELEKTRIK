@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
 
     [Header("Tamamlanma Paneli (İsteğe bağlı)")]
     public GameObject completedPanel;
+    public GameObject scorePanel;
 
     void Start()
     {
@@ -34,6 +35,10 @@ public class UIController : MonoBehaviour
     {
         if (completedPanel != null)
             completedPanel.SetActive(true);
+        if (scorePanel != null)
+            scorePanel.SetActive(true);
+
+        
     }
 
     public void SahneYenidenBaslat()
