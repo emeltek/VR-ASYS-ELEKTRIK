@@ -11314,7 +11314,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b4c095a310f74417da85bf4ef65a8806, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -20837,9 +20837,23 @@ MonoBehaviour:
   dumanEfekti: {fileID: 2604801693225537757}
   cizztiSesi: {fileID: 1499256899}
   monitorler:
+  - {fileID: 745359617}
+  - {fileID: 64887346302634987}
+  - {fileID: 1492662577}
   - {fileID: 1125164908}
+  - {fileID: 64000012363346507}
   - {fileID: 1292268963}
   - {fileID: 2018625055}
+  - {fileID: 64000014112843382}
+  - {fileID: 64000013133093755}
+  - {fileID: 1705947504}
+  - {fileID: 1899210418}
+  - {fileID: 64000014011500935}
+  - {fileID: 64000013001054549}
+  - {fileID: 1126342776}
+  - {fileID: 1493616765}
+  - {fileID: 64000013424627091}
+  - {fileID: 1986720426}
 --- !u!114 &794546659
 MonoBehaviour:
   m_ObjectHideFlags: 0
