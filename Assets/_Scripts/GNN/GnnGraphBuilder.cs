@@ -16,23 +16,20 @@ public struct GnnHazardZone
         return Mathf.Abs(local.x) <= half.x && Mathf.Abs(local.y) <= half.y && Mathf.Abs(local.z) <= half.z;
     }
 
-    /// <summary>Yatay (XZ) uzaklık: prizler yerde / alçakta olduğu için dikey fark sayılmaz.</summary>
+    /// <summary>
+    /// Yatay (XZ) uzaklık, kutunun dünya sınırlarına göre: prizler döndürülmüş olduğundan yerel
+    /// eksenlerden biri dünyada yatay kalabilir; yerel eksene göre hesap kutuyu sonsuz şerit yapar.
+    /// </summary>
     public float HorizontalDistance(Vector3 worldPoint)
     {
-        Vector3 local = Box.transform.InverseTransformPoint(worldPoint) - Box.center;
-        Vector3 half = Box.size * 0.5f;
-        Vector3 clamped = new Vector3(Mathf.Clamp(local.x, -half.x, half.x), local.y, Mathf.Clamp(local.z, -half.z, half.z));
-        Vector3 closest = Box.transform.TransformPoint(clamped + Box.center);
-        return new Vector2(closest.x - worldPoint.x, closest.z - worldPoint.z).magnitude;
+        Bounds b = WorldBounds();
+        float dx = Mathf.Max(b.min.x - worldPoint.x, 0f, worldPoint.x - b.max.x);
+        float dz = Mathf.Max(b.min.z - worldPoint.z, 0f, worldPoint.z - b.max.z);
+        return Mathf.Sqrt(dx * dx + dz * dz);
     }
 
     /// <summary>Yatay olarak kutunun içinde mi (dikey sınır yok).</summary>
-    public bool ContainsHorizontally(Vector3 worldPoint)
-    {
-        Vector3 local = Box.transform.InverseTransformPoint(worldPoint) - Box.center;
-        Vector3 half = Box.size * 0.5f;
-        return Mathf.Abs(local.x) <= half.x && Mathf.Abs(local.z) <= half.z;
-    }
+    public bool ContainsHorizontally(Vector3 worldPoint) => HorizontalDistance(worldPoint) <= 0f;
 
     public Bounds WorldBounds()
     {

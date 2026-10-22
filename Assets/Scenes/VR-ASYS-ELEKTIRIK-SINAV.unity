@@ -20801,7 +20801,10 @@ MonoBehaviour:
   uyariSesi: {fileID: 794546654}
   tehlikeClip: {fileID: 8300000, guid: afe028d15c89f475fa6327edbd9cc552, type: 3}
   calculateScore: {fileID: 794546660}
-  negativeScore: -10
+  freeResponseTime: 20
+  responseBudget: 30
+  responseTimeConstant: 30
+  scenarioTimeLimit: 120
 --- !u!114 &794546657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20817,6 +20820,8 @@ MonoBehaviour:
   electricLeak: {fileID: 794546658}
   dangerTimer: {fileID: 794546656}
   uiController: {fileID: 794546659}
+  calculateScore: {fileID: 0}
+  enerjiKesilmediCezasi: 30
   anonsSource: {fileID: 794546655}
   kacakTespitAnons: {fileID: 8300000, guid: 735fbd0b317d9441b8a0090c5757128f, type: 3}
   tebriklerAnons: {fileID: 8300000, guid: 6ee2ae1f9352b4db5872b64f74cc083b, type: 3}
@@ -28884,6 +28889,115 @@ Transform:
   m_Children:
   - {fileID: 1088368594}
   m_Father: {fileID: 1491510197}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1261380481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1261380484}
+  - component: {fileID: 1261380483}
+  - component: {fileID: 1261380482}
+  m_Layer: 0
+  m_Name: GNN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1261380482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261380481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37919bb0fb5a45faa2237d4dbae44e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  riskPredictor: {fileID: 0}
+  calculateScore: {fileID: 0}
+  trackedTarget: {fileID: 0}
+  proximityBudget: 30
+  entryShare: 0.4
+  exposureTimeConstant: 5
+  timeoutCautionPenalty: 15
+  timeoutDangerPenalty: 30
+  fallbackDangerDistance: 1
+  fallbackCautionDistance: 2.5
+  updateInterval: 0.5
+  reentryCooldown: 3
+  warningSound: {fileID: 0}
+  showDebugLogs: 1
+--- !u!114 &1261380483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261380481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d978ba50a90df4d39bcac481e5c1b523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weightsJson: {fileID: 0}
+  graphJson: {fileID: 0}
+  siteArea: {fileID: 0}
+  leakSources: []
+  panels: []
+  graphSettings:
+    cellSize: 0.5
+    siteMargin: 15
+    dangerDistance: 1
+    cautionDistance: 2.5
+    hazardProbeDistance: 15
+    clearanceProbeDistance: 3
+    cableRadius: 1.5
+    floorBand: 0.3
+    bodyRadius: 0.25
+    maxSlope: 35
+    maxStep: 0.3
+    equipmentKeywords:
+    - plug
+    - priz
+    - socket
+    - cable
+    - kablo
+    - rack
+    - server
+    - computer
+    - monitor
+    - power
+    cableKeywords:
+    - cable
+    - kablo
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    gridOffset: {x: 0, y: 0}
+  drawGizmos: 1
+  gizmoShowsDecision: 1
+  showDebugLogs: 1
+--- !u!4 &1261380484
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261380481}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 17.1006, y: -3.58502, z: -8.886593}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1261949205
 BoxCollider:
@@ -163420,7 +163534,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wrongBehaviourAudio: {fileID: 336282955}
   calculateScore: {fileID: 794546660}
-  negativeScore: -30
+  firstTouchPenalty: 30
+  repeatTouchPenalty: 10
+  penaltyPerSecond: 5
 --- !u!65 &4268104891680088410
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -189369,7 +189485,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wrongBehaviourAudio: {fileID: 336282955}
   calculateScore: {fileID: 794546660}
-  negativeScore: -40
+  firstTouchPenalty: 30
+  repeatTouchPenalty: 10
+  penaltyPerSecond: 5
 --- !u!65 &6428519201116422862
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -222066,3 +222184,4 @@ SceneRoots:
   - {fileID: 1954650309233492228}
   - {fileID: 1822531640}
   - {fileID: 4222562699184460475}
+  - {fileID: 1261380484}
