@@ -20801,7 +20801,7 @@ MonoBehaviour:
   uyariSesi: {fileID: 794546654}
   tehlikeClip: {fileID: 8300000, guid: afe028d15c89f475fa6327edbd9cc552, type: 3}
   calculateScore: {fileID: 794546660}
-  freeResponseTime: 20
+  freeResponseTime: 15
   responseBudget: 30
   responseTimeConstant: 30
   scenarioTimeLimit: 120

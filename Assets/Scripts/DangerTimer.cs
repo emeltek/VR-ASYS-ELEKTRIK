@@ -22,7 +22,7 @@ public class DangerTimer : MonoBehaviour
     [Header("Tepki Süresi Puanı")]
     public CalculateScore calculateScore;
     [Tooltip("Bu süre (s) içinde enerjiyi kesen kullanıcıdan puan düşülmez")]
-    public float freeResponseTime = 20f;
+    public float freeResponseTime = 15f;
     [Tooltip("Geç müdahale için en fazla düşülecek puan")]
     public float responseBudget = 30f;
     [Tooltip("Ceza zaman sabiti (s): ücretsiz süreden bu kadar sonra bütçenin %63'ü düşülmüş olur")]

@@ -78,7 +78,7 @@ public class ScenarioManager : MonoBehaviour
         }
 
         if (calculateScore != null)
-            calculateScore.FinalizeScore($"Enerji {dangerTimer.ElapsedTime:F0} s içinde kesildi");
+            calculateScore.FinalizeScore(null);
 
         if (uiController != null)
             uiController.SenaryoBitti();
