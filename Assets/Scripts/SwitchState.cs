@@ -27,8 +27,6 @@ public class SwitchState : MonoBehaviour
         if (currentAngle > 180)
             currentAngle -= 360;
 
-        Debug.Log($"Angle X: {currentAngle:F1}");
-
         // -140 açık, -90 kapalı olduğu için mantık tersine döndü
         isOn = currentAngle < offThreshold;
 

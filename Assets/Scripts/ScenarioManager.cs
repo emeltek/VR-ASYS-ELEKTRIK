@@ -10,6 +10,11 @@ public class ScenarioManager : MonoBehaviour
     public DangerTimer dangerTimer;
     public UIController uiController;
 
+    [Header("Puan")]
+    public CalculateScore calculateScore;
+    [Tooltip("2 dakika içinde enerji kesilmezse düşülen puan (tepki süresi cezasına ek)")]
+    public int enerjiKesilmediCezasi = 30;
+
     [Header("Sesler")]
     public AudioSource anonsSource;
     public AudioClip kacakTespitAnons;
@@ -21,7 +26,8 @@ public class ScenarioManager : MonoBehaviour
     {
         Intro,
         InProgress,
-        Completed
+        Completed,
+        Failed      // süre doldu: kaçak yangına dönüştü
     }
 
     public ScenarioState currentState = ScenarioState.Intro;
@@ -34,9 +40,8 @@ public class ScenarioManager : MonoBehaviour
     void Start()
     {
         sceneName = SceneManager.GetActiveScene().name;
+        if (calculateScore == null) calculateScore = FindObjectOfType<CalculateScore>();
     }
-
-    void Update() { }
 
     // UI Start butonuna bağlanır
     public void StartButton()
@@ -70,6 +75,31 @@ public class ScenarioManager : MonoBehaviour
         {
             anonsSource.PlayOneShot(tebriklerAnons);
 
+        }
+
+        if (calculateScore != null)
+            calculateScore.FinalizeScore($"Enerji {dangerTimer.ElapsedTime:F0} s içinde kesildi");
+
+        if (uiController != null)
+            uiController.SenaryoBitti();
+    }
+
+    /// <summary>
+    /// DangerTimer süre sınırında çağırır: enerji kesilmedi, kaçak yangına dönüştü.
+    /// Efektler (kıvılcım, duman) sürer; puan, oyuncunun o anki konumuna göre ek ceza ile kesinleşir.
+    /// </summary>
+    public void KacakYanginaDonustu()
+    {
+        if (currentState != ScenarioState.InProgress) return;
+
+        currentState = ScenarioState.Failed;
+        dangerTimer.TimeriDurdur();
+
+        if (calculateScore != null)
+        {
+            calculateScore.Deduct(enerjiKesilmediCezasi, "Enerji kesilmedi, kaçak yangına dönüştü");
+            GnnRiskScorer.ApplyTimeoutPositionPenalty(calculateScore);
+            calculateScore.FinalizeScore("Kaçak yangına dönüştü: enerji kesilmedi");
         }
 
         if (uiController != null)
