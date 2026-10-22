@@ -6,11 +6,10 @@ using UnityEngine;
 ///
 /// Kaçak sürerken oyuncu GNN'in "Tehlikeli" dediği alana (enerjili ekipmana ~1 m'den yakın) girerse
 /// önce yalnızca uyarı verilir: oyuncu panoya giderken buradan geçmek zorunda kalabilir. Tehlikeli alanda
-/// geçen toplam süre dangerGraceTime'ı aşınca ceza başlar:
+/// geçen toplam süre dangerGraceTime'ı aşınca ceza ani düşüş olmadan, saniye saniye artar:
 ///
-///   ceza = bütçe × [ girişPayı × w_giriş + (1 − girişPayı) × (1 − e^(−E / τ)) ]
+///   ceza = bütçe × (1 − e^(−E / τ))
 ///
-///   w_giriş : tolerans süresi dolduğu andaki GNN tehlike olasılığı
 ///   E       : tolerans süresinden sonra tehlikeli alanda geçen, GNN olasılığıyla ağırlıklı süre (s)
 ///   τ       : maruziyet zaman sabiti
 ///
@@ -38,8 +37,6 @@ public class GnnRiskScorer : MonoBehaviour
     [Header("Ceza Eğrisi")]
     [Tooltip("Tehlikeli alanda bu kadar (s, toplam) kalınana kadar puan düşmez; yalnızca uyarı verilir")]
     [SerializeField] private float dangerGraceTime = 5f;
-    [Tooltip("Bütçenin girişte hemen kesilen payı")]
-    [SerializeField, Range(0f, 1f)] private float entryShare = 0.4f;
     [Tooltip("Maruziyet zaman sabiti (s): bu kadar kalınca kalan payın %63'ü kesilmiş olur")]
     [SerializeField] private float exposureTimeConstant = 5f;
 
@@ -61,9 +58,7 @@ public class GnnRiskScorer : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool showDebugLogs = true;
 
-    private bool entered;
     private float dangerTime;    // tehlikeli alanda geçen toplam süre (s)
-    private float entryWeight;
     private float exposure;
     private int deducted;
     private float nextUpdate;
@@ -128,17 +123,9 @@ public class GnnRiskScorer : MonoBehaviour
             return;
         }
 
-        if (!entered)
-        {
-            entered = true;
-            entryWeight = w;
-        }
-        else if (!entering)
-        {
-            exposure += w * dt;
-        }
+        if (!entering) exposure += w * dt;
 
-        float target = proximityBudget * (entryShare * entryWeight + (1f - entryShare) * (1f - Mathf.Exp(-exposure / exposureTimeConstant)));
+        float target = proximityBudget * (1f - Mathf.Exp(-exposure / exposureTimeConstant));
         int penalty = Mathf.RoundToInt(target) - deducted;
         if (penalty <= 0 || calculateScore == null) return;
 

@@ -17,7 +17,7 @@ Ofis zemini 0.5 m hücrelere bölünür; her hücre bir düğümdür. Etiketler 
 |---|---|
 | Geç müdahale | İlk 20 s ücretsiz, sonra `30 × (1 − e^(−gecikme/30))`, en fazla 30 |
 | 2 dk içinde enerji kesilmedi | Senaryo "Kaçak yangına dönüştü" ile biter: geç müdahale 30 + 30; o anki konum Dikkat −15, Tehlikeli −30 |
-| Kaçağa yaklaşma (GNN Tehlikeli) | İlk 5 s (toplam) yalnızca uyarı; sonra bütçe 30: `30 × [0.4 × w + 0.6 × (1 − e^(−E/5))]`, E = 5 s'den sonraki süre. 5 s → −12, 8 s → −20, 15 s → −28. Dikkat alanı yalnızca uyarı |
+| Kaçağa yaklaşma (GNN Tehlikeli) | İlk 5 s (toplam) yalnızca uyarı; sonra ani düşüş olmadan kademeli, bütçe 30: `30 × (1 − e^(−E/5))`, E = 5 s'den sonraki süre. 6 s → −8, 8 s → −15, 10 s → −20, 15 s → −26. Dikkat alanı yalnızca uyarı |
 | Enerjili fiş / prize dokunma | İlk temas −30, her yeni temas −10, temas sürdükçe −5/s (üst sınır yok); iki el aynı anda = tek temas |
 
 Etiket: 75+ Güvenli, 50–74 Orta Riskli, 25–49 Riskli, 25 altı Yüksek Riskli.
