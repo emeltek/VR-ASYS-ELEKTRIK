@@ -4,15 +4,17 @@ using UnityEngine;
 /// <summary>
 /// Sınav sahnesinde kaçak noktasına yaklaşma cezasını GNN risk haritasından verir.
 ///
-/// Kaçak sürerken oyuncu GNN'in "Tehlikeli" dediği alana (enerjili ekipmana ~1 m'den yakın) girerse:
+/// Kaçak sürerken oyuncu GNN'in "Tehlikeli" dediği alana (enerjili ekipmana ~1 m'den yakın) girerse
+/// önce yalnızca uyarı verilir: oyuncu panoya giderken buradan geçmek zorunda kalabilir. Tehlikeli alanda
+/// geçen toplam süre dangerGraceTime'ı aşınca ceza başlar:
 ///
 ///   ceza = bütçe × [ girişPayı × w_giriş + (1 − girişPayı) × (1 − e^(−E / τ)) ]
 ///
-///   w_giriş : ilk girişteki GNN tehlike olasılığı
-///   E       : tehlikeli alanda geçen, GNN tehlike olasılığıyla ağırlıklandırılmış süre (s)
+///   w_giriş : tolerans süresi dolduğu andaki GNN tehlike olasılığı
+///   E       : tolerans süresinden sonra tehlikeli alanda geçen, GNN olasılığıyla ağırlıklı süre (s)
 ///   τ       : maruziyet zaman sabiti
 ///
-/// Ceza bütçeyi aşamaz; çıkıp girmek giriş payını tekrar kesmez. "Dikkat" alanı yalnızca uyarıdır.
+/// Tolerans süresi toplamdır (çıkıp girmek sıfırlamaz); ceza bütçeyi aşamaz. "Dikkat" alanı yalnızca uyarıdır.
 ///
 /// Süre dolup kaçak yangına dönüştüğünde (ScenarioManager.KacakYanginaDonustu) oyuncunun o anki
 /// konumu ayrıca cezalandırılır: Dikkat alanı −15, Tehlikeli alan −30. GNN hazır değilse aynı sınıflar
@@ -34,6 +36,8 @@ public class GnnRiskScorer : MonoBehaviour
     [SerializeField] private float proximityBudget = 30f;
 
     [Header("Ceza Eğrisi")]
+    [Tooltip("Tehlikeli alanda bu kadar (s, toplam) kalınana kadar puan düşmez; yalnızca uyarı verilir")]
+    [SerializeField] private float dangerGraceTime = 5f;
     [Tooltip("Bütçenin girişte hemen kesilen payı")]
     [SerializeField, Range(0f, 1f)] private float entryShare = 0.4f;
     [Tooltip("Maruziyet zaman sabiti (s): bu kadar kalınca kalan payın %63'ü kesilmiş olur")]
@@ -58,6 +62,7 @@ public class GnnRiskScorer : MonoBehaviour
     [SerializeField] private bool showDebugLogs = true;
 
     private bool entered;
+    private float dangerTime;    // tehlikeli alanda geçen toplam süre (s)
     private float entryWeight;
     private float exposure;
     private int deducted;
@@ -113,6 +118,15 @@ public class GnnRiskScorer : MonoBehaviour
     private void UpdateProximity(GnnPrediction p, bool entering, float dt)
     {
         float w = p.DangerProbability;
+        if (entering && warningSound != null) warningSound.Play();
+        if (!entering) dangerTime += dt;
+
+        if (dangerTime < dangerGraceTime)
+        {
+            if (entering && showDebugLogs)
+                Debug.Log($"<color=orange>[GNN] KAÇAĞA YAKIN (p={w:F2}): uyarı, {dangerGraceTime - dangerTime:F1} s içinde uzaklaşılmazsa puan düşer</color>");
+            return;
+        }
 
         if (!entered)
         {
@@ -123,7 +137,6 @@ public class GnnRiskScorer : MonoBehaviour
         {
             exposure += w * dt;
         }
-        if (entering && warningSound != null) warningSound.Play();
 
         float target = proximityBudget * (entryShare * entryWeight + (1f - entryShare) * (1f - Mathf.Exp(-exposure / exposureTimeConstant)));
         int penalty = Mathf.RoundToInt(target) - deducted;
