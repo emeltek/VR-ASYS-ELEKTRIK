@@ -53,7 +53,7 @@ public class GnnRiskPredictor : MonoBehaviour
     private float[] probabilities;
     private int[] previewLabels;
 
-    public bool IsReady => graph != null && probabilities != null;
+    public bool IsReady => graph != null && probabilities != null && probabilities.Length == graph.NodeCount * 3;
     public GnnGraph Graph => graph;
     public GnnGraphSettings GraphSettings => graphSettings;
 
@@ -76,6 +76,7 @@ public class GnnRiskPredictor : MonoBehaviour
 
     public void PredictNow()
     {
+        probabilities = null;
         if (model == null || graph == null) return;
 
         float start = Time.realtimeSinceStartup;
@@ -173,6 +174,7 @@ public class GnnRiskPredictor : MonoBehaviour
             return;
         }
         graph = GnnGraph.FromExport(export);
+        probabilities = null; // eski grafın tahminleri yeni grafla kullanılmasın
     }
 
     /// <summary>Sahne adını Resources yolunda güvenli ASCII'ye çevirir (ör. "Sınav" → "Sinav").</summary>
@@ -291,6 +293,8 @@ public class GnnRiskPredictor : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         if (!drawGizmos || graph == null) return;
+        if (probabilities != null && probabilities.Length != graph.NodeCount * 3) probabilities = null;
+        if (previewLabels != null && previewLabels.Length != graph.NodeCount) previewLabels = null;
 
         float size = graph.CellSize * 0.6f;
         Vector3 cube = new Vector3(size, size * 0.15f, size);
